@@ -53,7 +53,6 @@ const MovieComponent = () => {
             getMovie(id).then((response) => {
                 console.log(response.data)
                 setTitle(response.data.title)
-                setTaken(response.data.taken)
             }).catch(error=> {
                 console.error(error)
             })
@@ -80,19 +79,6 @@ const MovieComponent = () => {
                                 onChange={(e) => setTitle(e.target.value)}
                             >
                             </input>
-                        </div>
-
-                        <div className='form-group mb-2'>
-                            <label className='form-label'>Seat Taken:</label>
-                            <select
-                                className='form-control'
-                                value={taken}
-                                onChange={(e) => setTaken(e.target.value)}
-                            >
-                                <option value="false">Free</option>
-                                <option value="true">Taken</option>
-
-                            </select>
                         </div>
 
                         <button className='btn btn-success' onClick={ (e) => saveOrUpdateMovie(e)}>Save</button>

@@ -4,6 +4,7 @@ import HeaderComponent from './components/HeaderComponent'
 import FooterComponent from './components/FooterComponent'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MovieComponent from './components/MovieComponent'
+import CinemaRoomComponent from './components/CinemaRoomComponent';
 
 function App() {
 
@@ -23,6 +24,9 @@ function App() {
 
           {/* http://localhost:8080/update-movie/1 */}
           <Route path='/update-movie/:id' element = { <MovieComponent/> }></Route>
+
+          {/* http://localhost:8080/cinema-room/1?ticketCount=2 */}
+          <Route path="/cinema-room/:id" element={<CinemaRoomComponent/> }></Route>
           
         </Routes>
       <FooterComponent/>
