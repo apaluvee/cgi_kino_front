@@ -58,14 +58,20 @@ const ListMovieComponent = () => {
                             movies.map(movie => (
                                 <tr key={movie.id}>
                                     <td>{movie.title}</td>
-                                    <td>{movie.taken ? 'Taken' : 'Free'}</td>
+                                    <td>{movie.taken ? 'No' : 'Yes'}</td>
                                     <td>
                                         <button className='btn btn-info' onClick={() => updateMovie(movie.id)}>Update</button>
                                         <button className='btn btn-danger' onClick={() => removeMovie(movie.id)} style={{ marginLeft: "10px" }} >Delete</button>
 
                                         <Link to={`/cinema-room/${movie.id}?ticketCount=${ticketCount}`} className="btn btn-success" style={{ marginLeft: "10px" }}>Select tickets</Link>
 
-                                        <input type="number" value={ticketCount} onChange={(e) => setTicketCount(parseInt(e.target.value))} min="1" />
+                                        <input 
+                                            type="number" 
+                                            value={ticketCount} 
+                                            onChange={(e) => setTicketCount(parseInt(e.target.value))} 
+                                            min="1" 
+                                            style={{ marginLeft: "10px", width: "50px" }}
+                                        />
                                     </td>
                                 </tr>
                             ))

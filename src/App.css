@@ -27,15 +27,35 @@
   cursor: pointer;
 }
 
+
 .taken {
-  background-color: #04dceba4;
+  background-color: #5feef8;
 }
 
 .selected {
-  background-color: #ff6b6b;
+  background-color: #ffd06b;
 }
 
 .center-button {
   display: flex;
   justify-content: center;
 }
+
+.screen-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 12vh;
+}
+
+.screen {
+  width: 50%;
+  height: 50px;
+  background-color: rgb(189, 189, 189);
+}
+
+
+.perspective {
+  margin-bottom: 150px;
+}
+

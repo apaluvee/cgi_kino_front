@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { getCinemaRoom, markSeatsAsTaken } from '../services/CinemaRoomService';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 
 const CinemaRoomComponent = () => {
     const [cinemaRoomId, setCinemaRoomId] = useState(null);
     const [cinemaRoom, setCinemaRoom] = useState(null);
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [refresh, setRefresh] = useState(false);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const ticketCountParam = queryParams.get('ticketCount');
+    const initialTicketCount = ticketCountParam ? parseInt(ticketCountParam) : 1;
+    const navigate = useNavigate();
 
     useEffect(() => {
         const id = window.location.pathname.split("/").pop();
@@ -23,12 +29,28 @@ const CinemaRoomComponent = () => {
             });
     };
 
+    useEffect(() => {
+        if (initialTicketCount > 0 && cinemaRoom) {
+            const initialSelectedSeats = cinemaRoom.seats
+                .filter(seat => !seat.taken)
+                .slice(0, initialTicketCount)
+                .map(seat => seat.id);
+            setSelectedSeats(initialSelectedSeats);
+        }
+    }, [initialTicketCount, cinemaRoom]);
+
     const handleSeatClick = (seatId) => {
         setSelectedSeats((prevSelectedSeats) => {
-            const updatedSelectedSeats = [...prevSelectedSeats];
+            let updatedSelectedSeats = [...prevSelectedSeats];
             const index = updatedSelectedSeats.indexOf(seatId);
+            
             if (index === -1) {
-                updatedSelectedSeats.push(seatId);
+                
+                const availableSeats = cinemaRoom.seats
+                    .filter(seat => !seat.taken)
+                    .map(seat => seat.id);
+                const clickedSeatIndex = availableSeats.indexOf(seatId);
+                updatedSelectedSeats = availableSeats.slice(clickedSeatIndex, clickedSeatIndex + initialTicketCount);
             } else {
                 updatedSelectedSeats.splice(index, 1);
             }
@@ -42,22 +64,32 @@ const CinemaRoomComponent = () => {
                 console.log("Seats marked as taken successfully");
                 setSelectedSeats([]);
                 setRefresh(prevRefresh => !prevRefresh);
+                navigate('/movies');
             })
             .catch((error) => {
                 console.error("Error marking seats as taken:", error);
             });
     };
 
+    const handleCancelSelection = () => {
+        setSelectedSeats([]);
+    };
+
     if (!cinemaRoom) {
         return <div>Loading...</div>;
     }
 
-    // Sort seats based on their IDs
     const sortedSeats = [...cinemaRoom.seats].sort((a, b) => a.id - b.id);
 
     return (
         <div>
-            <h2>{cinemaRoom.title}</h2>
+            <div style={{ textAlign: 'center' }}>
+              <h2>{cinemaRoom.title}</h2>
+            </div>
+
+            <div className="screen-container">
+              <div className="screen"></div>
+            </div>
 
             <div className="seat-map">
                 {sortedSeats.map((seat) => (
@@ -75,7 +107,8 @@ const CinemaRoomComponent = () => {
             </div>
             <br /> <br />
             <div className="center-button">
-                <button onClick={handleMarkSeatsAsTaken}>Book seats</button>
+                <Link to={`/movies`} className="btn btn-success" onClick={handleMarkSeatsAsTaken}>Book tickets</Link>
+                <button className="btn btn-danger" onClick={handleCancelSelection} style={{ marginLeft: "10px" }}>Clear selection</button>
             </div>
         </div>
     );
