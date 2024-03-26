@@ -64,7 +64,16 @@ const CinemaRoomComponent = () => {
                 console.log("Seats marked as taken successfully");
                 setSelectedSeats([]);
                 setRefresh(prevRefresh => !prevRefresh);
-                navigate('/movies');
+                
+                
+                navigate('/booking-confirmation', {
+                    state: {
+                      movieTitle: cinemaRoom.title,
+                      ticketCount: selectedSeats.length
+                    }
+                });
+
+                
             })
             .catch((error) => {
                 console.error("Error marking seats as taken:", error);

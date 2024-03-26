@@ -5,6 +5,7 @@ import FooterComponent from './components/FooterComponent'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MovieComponent from './components/MovieComponent'
 import CinemaRoomComponent from './components/CinemaRoomComponent';
+import BookingConfirmation from './components/BookingConfirmation';
 
 function App() {
 
@@ -27,6 +28,8 @@ function App() {
 
           {/* http://localhost:8080/cinema-room/1?ticketCount=2 */}
           <Route path="/cinema-room/:id" element={<CinemaRoomComponent/> }></Route>
+
+          <Route path="/booking-confirmation" element={<BookingConfirmation />} />
           
         </Routes>
       <FooterComponent/>

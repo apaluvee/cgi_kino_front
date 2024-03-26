@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom'
 const MovieComponent = () => {
 
     const [title, setTitle] = useState('')
-    const [taken, setTaken] = useState(false)
     const navigate = useNavigate()
     const {id} = useParams()
 
@@ -16,7 +15,7 @@ const MovieComponent = () => {
     function saveOrUpdateMovie(e){
         e.preventDefault()
 
-        const movie = {title, taken}
+        const movie = {title}
         console.log(movie)
 
         if (id) {
