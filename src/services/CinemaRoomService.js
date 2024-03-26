@@ -17,3 +17,7 @@ export function updateSeat(cinemaRoomId, seatData) {
 export function markSeatsAsTaken(cinemaRoomId, seatIds) {
     return axios.patch(`${BASE_REST_API_URL}/${cinemaRoomId}/seats`, seatIds);
 }
+
+export function getFreeSeatCount(cinemaRoomId) {
+    return axios.get(`${BASE_REST_API_URL}/${cinemaRoomId}/seats/count`);
+}

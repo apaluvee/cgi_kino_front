@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { deleteMovie, getAllMovies } from '../services/MovieService';
+import { getFreeSeatCount } from '../services/CinemaRoomService';
 import { useNavigate, Link } from 'react-router-dom';
 
 const ListMovieComponent = () => {
     const [movies, setMovies] = useState([]);
     const [ticketCount, setTicketCount] = useState(1);
+    const [availableSeats, setAvailableSeats] = useState({});
 
     const navigate = useNavigate();
 
@@ -14,11 +16,31 @@ const ListMovieComponent = () => {
 
     function listMovies() {
         getAllMovies()
-            .then((response) => {
+            .then(response => {
                 setMovies(response.data);
+                updateAvailableSeats(response.data);
             })
             .catch(error => {
                 console.error(error);
+            });
+    }
+
+    function updateAvailableSeats(movies) {
+        const seatCounts = {};
+        const promises = movies.map(movie => {
+            return getFreeSeatCount(movie.id)
+                .then(response => {
+                    seatCounts[movie.id] = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                    seatCounts[movie.id] = 0;
+                });
+        });
+
+        Promise.all(promises)
+            .then(() => {
+                setAvailableSeats(seatCounts);
             });
     }
 
@@ -58,7 +80,7 @@ const ListMovieComponent = () => {
                             movies.map(movie => (
                                 <tr key={movie.id}>
                                     <td>{movie.title}</td>
-                                    <td>{movie.taken ? 'No' : 'Yes'}</td>
+                                    <td>{availableSeats[movie.id]}</td>
                                     <td>
                                         <button className='btn btn-info' onClick={() => updateMovie(movie.id)}>Update</button>
                                         <button className='btn btn-danger' onClick={() => removeMovie(movie.id)} style={{ marginLeft: "10px" }} >Delete</button>
