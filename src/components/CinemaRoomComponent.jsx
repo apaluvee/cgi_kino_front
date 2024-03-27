@@ -137,6 +137,10 @@ const CinemaRoomComponent = () => {
         setSelectedSeats([]);
     };
 
+    const handleGoBack = () => {
+        navigate('/movies');
+    };
+
     if (!cinemaRoom) {
         return <div>Loading...</div>;
     }
@@ -171,6 +175,8 @@ const CinemaRoomComponent = () => {
             <div className="center-button">
                 <Link to={`/movies`} className="btn btn-success" onClick={handleMarkSeatsAsTaken}>Book tickets</Link>
                 <button className="btn btn-danger" onClick={handleCancelSelection} style={{ marginLeft: "10px" }}>Clear selection</button>
+                <button className='btn btn-info' onClick={handleGoBack} style={{ marginLeft: "10px" }}>Go Back</button>
+                
             </div>
         </div>
     );
