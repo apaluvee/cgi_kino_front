@@ -29,34 +29,88 @@ const CinemaRoomComponent = () => {
             });
     };
 
+
+
+    //preselecting must be centered
     useEffect(() => {
         if (initialTicketCount > 0 && cinemaRoom) {
-            const initialSelectedSeats = cinemaRoom.seats
-                .filter(seat => !seat.taken)
-                .slice(0, initialTicketCount)
-                .map(seat => seat.id);
+            const availableSeats = cinemaRoom.seats.filter(seat => !seat.taken);
+            const rowCount = Math.max(...availableSeats.map(seat => seat.row));
+            const middleRow = Math.floor(rowCount / 2);
+    
+            const seatsInMiddleRow = availableSeats.filter(seat => seat.row === middleRow);
+            const seatCountInMiddleRow = seatsInMiddleRow.length;
+            let middleSeatInMiddleRow = Math.floor(seatCountInMiddleRow / 2);
+    
+            const initialSelectedSeats = [];
+
+            if (initialTicketCount === 1) {
+                middleSeatInMiddleRow = Math.floor(seatCountInMiddleRow / 2);
+                initialSelectedSeats.push(seatsInMiddleRow[middleSeatInMiddleRow].id);
+            } else {
+                const startSeatIndex = Math.max(0, middleSeatInMiddleRow - Math.floor(initialTicketCount / 2));
+                let selectedCount = 0;
+                for (let i = startSeatIndex; i < seatsInMiddleRow.length; i++) {
+
+                    if (selectedCount >= initialTicketCount) break;
+                    initialSelectedSeats.push(seatsInMiddleRow[i].id);
+                    selectedCount++;
+                }
+                let remainingTickets = initialTicketCount - selectedCount;
+
+                if (remainingTickets > 0) {
+                    let rowIndex = middleRow + 1;
+                    
+                    while (remainingTickets > 0 && rowIndex <= rowCount) {
+                        const seatsInRow = availableSeats.filter(seat => seat.row === rowIndex);
+                        for (let i = 0; i < seatsInRow.length; i++) {
+                            if (remainingTickets === 0) break;
+                            initialSelectedSeats.push(seatsInRow[i].id);
+                            remainingTickets--;
+                        }
+                        rowIndex++;
+                    }
+                    
+                    if (remainingTickets > 0) {
+                        const startSeat = initialSelectedSeats[0];
+                        const startIndex = availableSeats.findIndex(seat => seat.id === startSeat);
+                        for (let i = startIndex - 1; i >= 0 && remainingTickets > 0; i--) {
+                            initialSelectedSeats.unshift(availableSeats[i].id);
+                            remainingTickets--;
+                        }
+                    }
+                }
+            }
             setSelectedSeats(initialSelectedSeats);
         }
     }, [initialTicketCount, cinemaRoom]);
+    
+
+
 
     const handleSeatClick = (seatId) => {
         setSelectedSeats((prevSelectedSeats) => {
-            let updatedSelectedSeats = [...prevSelectedSeats];
-            const index = updatedSelectedSeats.indexOf(seatId);
+            const clickedSeatIndex = cinemaRoom.seats.findIndex(seat => seat.id === seatId);
+
+            const availableSeats = cinemaRoom.seats.filter(seat => !seat.taken);
             
-            if (index === -1) {
-                
-                const availableSeats = cinemaRoom.seats
-                    .filter(seat => !seat.taken)
-                    .map(seat => seat.id);
-                const clickedSeatIndex = availableSeats.indexOf(seatId);
-                updatedSelectedSeats = availableSeats.slice(clickedSeatIndex, clickedSeatIndex + initialTicketCount);
-            } else {
-                updatedSelectedSeats.splice(index, 1);
+            const startIndex = Math.max(0, clickedSeatIndex - Math.floor(initialTicketCount / 2));
+            const updatedSelectedSeats = availableSeats.slice(startIndex, startIndex + initialTicketCount);
+    
+        
+            const remainingCount = initialTicketCount - updatedSelectedSeats.length;
+
+            if (remainingCount > 0) {
+                const adjustedStartIndex = Math.max(0, startIndex - remainingCount);
+                const remainingSeats = availableSeats.slice(adjustedStartIndex, startIndex);
+                updatedSelectedSeats.unshift(...remainingSeats);
             }
-            return updatedSelectedSeats;
+    
+            return updatedSelectedSeats.map(seat => seat.id);
         });
     };
+    
+    
 
     const handleMarkSeatsAsTaken = () => {
         markSeatsAsTaken(cinemaRoomId, selectedSeats)
@@ -69,11 +123,10 @@ const CinemaRoomComponent = () => {
                 navigate('/booking-confirmation', {
                     state: {
                       movieTitle: cinemaRoom.title,
-                      ticketCount: selectedSeats.length
+                      ticketCount: selectedSeats.length,
+
                     }
                 });
-
-                
             })
             .catch((error) => {
                 console.error("Error marking seats as taken:", error);

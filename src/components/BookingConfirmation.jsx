@@ -16,7 +16,7 @@ const BookingConfirmation = () => {
             <div>
                 <p>Selected Movie: {movieTitle}</p>
                 <p>Number of Tickets: {ticketCount}</p>
-                <button onClick={handleGoBack}>Go Back</button>
+                <button className='btn btn-info' onClick={handleGoBack}>Go Back</button>
             </div>
         </div>
     );
