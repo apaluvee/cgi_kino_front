@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import MovieComponent from './components/MovieComponent'
 import CinemaRoomComponent from './components/CinemaRoomComponent';
 import BookingConfirmation from './components/BookingConfirmation';
+import AvailableMoviesComponent from './components/AvailableMoviesComponent'
+import SelectTicketsComponent from './components/SelectTicketsComponent'
 
 function App() {
 
@@ -30,6 +32,10 @@ function App() {
           <Route path="/cinema-room/:id" element={<CinemaRoomComponent/> }></Route>
 
           <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+
+          <Route path="/movies-list" element={<AvailableMoviesComponent />} />
+
+          <Route path="/tickets/:id" element={<SelectTicketsComponent />} />
           
         </Routes>
       <FooterComponent/>

@@ -7,12 +7,15 @@ const BookingConfirmation = () => {
     const navigate = useNavigate();
 
     const handleGoBack = () => {
-        navigate('/movies');
+        navigate('/movies-list');
     };
 
     return (
-        <div>
-            <h2>Booking Confirmation</h2>
+        <div className="container">
+
+            <h8 className='text-center'>BookingConfirmation</h8>
+
+            <h2 className='text-center'>Booking Confirmation</h2>
             <div>
                 <p>Selected Movie: {movieTitle}</p>
                 <p>Number of Tickets: {ticketCount}</p>

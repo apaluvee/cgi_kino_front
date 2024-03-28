@@ -138,7 +138,7 @@ const CinemaRoomComponent = () => {
     };
 
     const handleGoBack = () => {
-        navigate('/movies');
+        navigate('/movies-list');
     };
 
     if (!cinemaRoom) {
@@ -148,9 +148,13 @@ const CinemaRoomComponent = () => {
     const sortedSeats = [...cinemaRoom.seats].sort((a, b) => a.id - b.id);
 
     return (
-        <div>
-            <div style={{ textAlign: 'center' }}>
-              <h2>{cinemaRoom.title}</h2>
+        <div className="container">
+
+            
+
+            <div>
+                <h8 className='text-center'>CinemaRoomComponent</h8>
+                <h2 className='text-center'>Selected Movie: {cinemaRoom.title}</h2>
             </div>
 
             <div className="screen-container">
