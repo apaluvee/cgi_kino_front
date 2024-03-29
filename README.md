@@ -6,4 +6,5 @@
 
 ## Building and running the application
 npm install
+
 npm run dev
