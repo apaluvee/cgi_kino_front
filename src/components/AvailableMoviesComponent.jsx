@@ -21,6 +21,17 @@ const AvailableMoviesComponent = () => {
             });
     }
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = ('0' + date.getDate()).slice(-2);
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const year = date.getFullYear();
+        const hour = ('0' + date.getHours()).slice(-2);
+        const minute = ('0' + date.getMinutes()).slice(-2);
+        
+        return `${day}/${month}/${year}, ${hour}:${minute}`;
+    };
+
     return (
         <div className='container'>
             
@@ -46,7 +57,7 @@ const AvailableMoviesComponent = () => {
                                     <td>{movie.title}</td>
                                     <td>{movie.genre}</td>
                                     <td>{movie.ageRating}</td>
-                                    <td>{movie.startTime}</td>
+                                    <td>{formatDate(movie.startTime)}</td>
                                     <td>{movie.language}</td>
                                     <td>
                                         <Link to={`/tickets/${movie.id}`} className="btn btn-success">Select Movie</Link>

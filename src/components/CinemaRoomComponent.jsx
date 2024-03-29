@@ -123,7 +123,11 @@ const CinemaRoomComponent = () => {
                 navigate('/booking-confirmation', {
                     state: {
                       movieTitle: cinemaRoom.title,
-                      ticketCount: selectedSeats.length,
+                      movieGenre: cinemaRoom.genre,
+                      movieAgeRating: cinemaRoom.ageRating,
+                      movieLanguage: cinemaRoom.language,
+                      movieStartTime: cinemaRoom.startTime,
+                      ticketCount: selectedSeats.length
 
                     }
                 });
