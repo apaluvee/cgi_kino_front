@@ -6,89 +6,133 @@ import { useParams } from 'react-router-dom'
 
 const MovieComponent = () => {
 
-    const [title, setTitle] = useState('')
     const navigate = useNavigate()
     const {id} = useParams()
 
+    const [movie, setMovie] = useState({
+        title: '',
+        genre: '',
+        ageRating: '',
+        startTime: '',
+        language: ''
+    });
 
-    
-    function saveOrUpdateMovie(e){
-        e.preventDefault()
-
-        const movie = {title}
-        console.log(movie)
-
+    useEffect(() => {
         if (id) {
-            updateMovie(id, movie).then((response) => {
-                navigate('/movies')
-            }).catch(error => {
-                console.error(error);
-            })
+            getMovie(id)
+                .then(response => {
+                    setMovie(response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    }, [id]);
 
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setMovie(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    const saveOrUpdateMovie = e => {
+        e.preventDefault();
+        if (id) {
+            updateMovie(id, movie)
+                .then(response => {
+                    navigate('/movies');
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         } else {
-            saveMovie(movie).then((response) => {
-                console.log(response.data)
-                navigate('/movies')
-            }).catch(error => {
-                console.error(error);
-            })
-
+            saveMovie(movie)
+                .then(response => {
+                    navigate('/movies');
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
+    };
 
-        
-    }
+    return (
+        <div className='container'>
+            <br /> <br />
+            <div className='row'>
+                <div className='card col-md-6 offset-md-3 offset-md-3'>
+                    <h2 className='text-center'>{id ? 'Update Movie' : 'Add Movie'}</h2>
+                    <div className='card-body'>
+                        <form>
 
-    function pageTitle(){
-        if(id) {
-            return <h2 className='text-center'>Update Movie</h2>
-        } else {
-            return <h2 className='text-center'>Add Movie</h2>
-        }
-    }
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Movie Title:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    placeholder='Enter Movie Title'
+                                    name='title'
+                                    value={movie.title}
+                                    onChange={handleChange}
+                                />
+                            </div>
 
-    useEffect(()=> {
-        if(id){
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Genre:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    placeholder='Enter Genre'
+                                    name='genre'
+                                    value={movie.genre}
+                                    onChange={handleChange}
+                                />
+                            </div>
 
-            getMovie(id).then((response) => {
-                console.log(response.data)
-                setTitle(response.data.title)
-            }).catch(error=> {
-                console.error(error)
-            })
-        }
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Age Rating:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    placeholder='Enter Age Rating'
+                                    name='ageRating'
+                                    value={movie.ageRating}
+                                    onChange={handleChange}
+                                />
+                            </div>
 
-    }, [id])
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Start Time:</label>
+                                <input
+                                    type='datetime-local'
+                                    className='form-control'
+                                    name='startTime'
+                                    value={movie.startTime}
+                                    onChange={handleChange}
+                                />
+                            </div>
 
-  return (
-    <div className='container'>
-        <br /> <br />
-        <div className='row'>
-            <div className='card col-md-6 offset-md-3 offset-md-3'>
-                { pageTitle() }
-                <div className='card-body'>
-                    <form>
-                        <div className='form-group mb-2'>
-                            <label className='form-label'>Movie Title:</label>
-                            <input
-                                type='text'
-                                className='form-control'
-                                placeholder='Enter Movie Title'
-                                name='title'
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                            >
-                            </input>
-                        </div>
-
-                        <button className='btn btn-success' onClick={ (e) => saveOrUpdateMovie(e)}>Save</button>
-                    </form>
-
+                            <div className='form-group mb-2'>
+                                <label className='form-label'>Language:</label>
+                                <input
+                                    type='text'
+                                    className='form-control'
+                                    placeholder='Enter Language'
+                                    name='language'
+                                    value={movie.language}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            
+                            <button className='btn btn-success' onClick={saveOrUpdateMovie}> Save </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
-  )
-}
+    );
+};
 
-export default MovieComponent
+export default MovieComponent;

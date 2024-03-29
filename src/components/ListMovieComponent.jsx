@@ -71,6 +71,10 @@ const ListMovieComponent = () => {
                     <thead>
                         <tr>
                             <th>Movie Title</th>
+                            <th>Genre</th>
+                            <th>Age Rating</th>
+                            <th>Start Time</th>
+                            <th>Language</th>
                             <th>Seats available</th>
                             <th>Actions</th>
                         </tr>
@@ -80,6 +84,10 @@ const ListMovieComponent = () => {
                             movies.map(movie => (
                                 <tr key={movie.id}>
                                     <td>{movie.title}</td>
+                                    <td>{movie.genre}</td>
+                                    <td>{movie.ageRating}</td>
+                                    <td>{movie.startTime}</td>
+                                    <td>{movie.language}</td>
                                     <td>{availableSeats[movie.id]}</td>
                                     <td>
                                         <button className='btn btn-info' onClick={() => updateMovie(movie.id)}>Update</button>

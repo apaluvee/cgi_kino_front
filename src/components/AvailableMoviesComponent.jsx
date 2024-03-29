@@ -32,6 +32,10 @@ const AvailableMoviesComponent = () => {
                     <thead>
                         <tr>
                             <th>Movie Title</th>
+                            <th>Genre</th>
+                            <th>Age Rating</th>
+                            <th>Start Time</th>
+                            <th>Language</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -40,6 +44,10 @@ const AvailableMoviesComponent = () => {
                             movies.map(movie => (
                                 <tr key={movie.id}>
                                     <td>{movie.title}</td>
+                                    <td>{movie.genre}</td>
+                                    <td>{movie.ageRating}</td>
+                                    <td>{movie.startTime}</td>
+                                    <td>{movie.language}</td>
                                     <td>
                                         <Link to={`/tickets/${movie.id}`} className="btn btn-success">Select Movie</Link>
                                     </td>
