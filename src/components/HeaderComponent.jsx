@@ -5,12 +5,12 @@ const HeaderComponent = () => {
     <div>
         <header>
             <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
-                <div>
-                    <a href='http://localhost:3000' className='navbar-brand'>
-                        TestingPage
-                    </a>
-                    <a href='http://localhost:3000/movies-list' className='navbar-brand'>
+                <div className='nav-options'>
+                    <a href='/' className='navbar-brand'>
                         Movies
+                    </a>
+                    <a href='/movies-list' className='navbar-brand'>
+                        Admin
                     </a>
                 </div>
             </nav>

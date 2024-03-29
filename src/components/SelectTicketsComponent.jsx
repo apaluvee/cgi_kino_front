@@ -8,7 +8,6 @@ const ListMovieComponent = () => {
     const [ticketCount, setTicketCount] = useState(1);
     const [availableSeats, setAvailableSeats] = useState({});
     const [selectedMovieTitle, setSelectedMovieTitle] = useState(null);
-
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -17,8 +16,8 @@ const ListMovieComponent = () => {
             getMovie(id)
                 .then(response => {
                     const movie = response.data;
-                    setSelectedMovieTitle(movie.title); // Set the selected movie title
-                    setMovies([movie]); // Display only the selected movie
+                    setSelectedMovieTitle(movie.title);
+                    setMovies([movie]);
                     updateAvailableSeats([movie]);
                 })
                 .catch(error => {
@@ -61,8 +60,8 @@ const ListMovieComponent = () => {
 
     return (
         <div className='container'>
-            <h2 className='text-center'>{selectedMovieTitle ? `Selected Movie: ${selectedMovieTitle}` : 'Movies List'}</h2>
-            <div>
+            <h2 className='heading-title'>{selectedMovieTitle ? `Selected Movie: ${selectedMovieTitle}` : 'Movies List'}</h2>
+            <div className='content-main'>
                 <table className='table table-bordered table-striped'>
                     <thead>
                         <tr>

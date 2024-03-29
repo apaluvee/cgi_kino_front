@@ -34,11 +34,8 @@ const AvailableMoviesComponent = () => {
 
     return (
         <div className='container'>
-            
-            <h8 className='text-center'>AvailableMoviesComponent</h8>
-
-            <h2 className='text-center'>Available Movies</h2>
-            <div>
+            <h2 className='heading-title'>Available Movies</h2>
+            <div className='content-main'>
                 <table className='table table-bordered table-striped'>
                     <thead>
                         <tr>

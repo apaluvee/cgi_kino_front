@@ -1,14 +1,17 @@
 .footer {
-  position: absolute;
+  margin-top: 40px;
   bottom: 0;
   width:100%;
-  height: 50px;
+  height: 40px;
   background-color: black;
   text-align: center;
   color: white;
+  display: grid;
+  place-content: center;
 }
 
 .seat-map {
+  font-size: 12px;
   display: grid;
   grid-template-columns: repeat(15, 50px);
   grid-template-rows: repeat(8, 50px);
@@ -49,7 +52,7 @@
 }
 
 .screen {
-  width: 50%;
+  width: 80%;
   height: 50px;
   background-color: rgb(189, 189, 189);
 }
@@ -59,3 +62,46 @@
   margin-bottom: 150px;
 }
 
+.footer > p {
+  margin: 0px;
+}
+
+.heading-title {
+  display: grid;
+  place-content: center;
+  padding: 20px;
+}
+
+.content-main {
+  min-height: 100vh;
+}
+
+.booking-confirmation {
+  display: grid;
+  place-content: center;
+  margin: 0 auto;
+  margin-top: 50px;
+  border: 2px solid rgb(175, 175, 175);
+  border-radius: 20px;
+  width: fit-content;
+  padding: 20px;
+}
+
+.bold-text {
+  font-weight: bold;
+}
+
+.booking-columns {
+  display: flex;
+  gap: 10px;
+}
+
+nav {
+  padding: 20px 40px !important;
+}
+
+.nav-options {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}

@@ -4,7 +4,7 @@ const FooterComponent = () => {
   return (
     <div>
         <footer className='footer'>
-            <p className='text-center'>Copyrights reserved</p>
+            <p>Copyrights reserved</p>
         </footer>
     </div>
   )

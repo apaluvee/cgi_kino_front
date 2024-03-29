@@ -17,7 +17,7 @@ function App() {
       <HeaderComponent/>
         <Routes>
           {/* http://localhost:8080 */}
-          <Route path='/' element = { <ListMovieComponent/> }></Route>
+          <Route path='/movies-list' element = { <ListMovieComponent/> }></Route>
 
           {/* http://localhost:8080/movies */}
           <Route path='/movies' element = { <ListMovieComponent/> }></Route>
@@ -33,7 +33,7 @@ function App() {
 
           <Route path="/booking-confirmation" element={<BookingConfirmation />} />
 
-          <Route path="/movies-list" element={<AvailableMoviesComponent />} />
+          <Route path="/" element={<AvailableMoviesComponent />} />
 
           <Route path="/tickets/:id" element={<SelectTicketsComponent />} />
           

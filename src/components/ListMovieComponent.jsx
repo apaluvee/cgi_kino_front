@@ -64,7 +64,7 @@ const ListMovieComponent = () => {
 
     return (
         <div className='container'>
-            <h2 className='text-center'>List of Movies</h2>
+            <h2 className='heading-title'>List of Movies</h2>
             <button className='btn btn-primary mb-2' onClick={addNewMovie}>Add Movie</button>
             <div>
                 <table className='table table-bordered table-striped'>
@@ -80,8 +80,7 @@ const ListMovieComponent = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            movies.map(movie => (
+                        {movies.map(movie => (
                                 <tr key={movie.id}>
                                     <td>{movie.title}</td>
                                     <td>{movie.genre}</td>

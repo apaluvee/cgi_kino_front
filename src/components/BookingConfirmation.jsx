@@ -7,7 +7,7 @@ const BookingConfirmation = () => {
     const navigate = useNavigate();
 
     const handleGoBack = () => {
-        navigate('/movies-list');
+        navigate('/');
     };
 
     const formatDate = (dateString) => {
@@ -23,18 +23,29 @@ const BookingConfirmation = () => {
 
     return (
         <div className="container">
-
-            <h8 className='text-center'>BookingConfirmation</h8>
-
-            <h2 className='text-center'>Booking Confirmation</h2>
-            <div>
-                <p>Selected Movie: {movieTitle}</p>
-                <p>Genre: {movieGenre}</p>
-                <p>Age Rating: {movieAgeRating}</p>
-                <p>Language: {movieLanguage}</p>
-                <p>Movie starting time: {formatDate(movieStartTime)}</p>
-                <p>Number of Tickets: {ticketCount}</p>
-                <button className='btn btn-info' onClick={handleGoBack}>Go Back</button>
+            <h2 className='heading-title'>Booking Confirmation</h2>
+            <div className='content-main'>
+                <div className='booking-confirmation'>
+                    <div className='booking-columns'>
+                        <div className='booking-labels'>
+                            <p>Selected Movie:</p>
+                            <p>Genre: </p>
+                            <p>Age Rating: </p>
+                            <p>Language: </p>
+                            <p>Movie starting time: </p>
+                            <p>Number of Tickets: </p>
+                        </div>
+                        <div className='booking-values'>
+                            <p className='bold-text'>{movieTitle}</p>
+                            <p className='bold-text'>{movieGenre}</p>
+                            <p className='bold-text'>{movieAgeRating}</p>
+                            <p className='bold-text'>{movieLanguage}</p>
+                            <p className='bold-text'>{formatDate(movieStartTime)}</p>
+                            <p className='bold-text'>{ticketCount}</p>
+                        </div>
+                    </div>
+                    <button className='btn btn-info' onClick={handleGoBack}>Go Back</button>
+                </div>
             </div>
         </div>
     );

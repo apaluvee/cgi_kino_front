@@ -29,19 +29,14 @@ const CinemaRoomComponent = () => {
             });
     };
 
-
-
-    //preselecting must be centered
     useEffect(() => {
         if (initialTicketCount > 0 && cinemaRoom) {
             const availableSeats = cinemaRoom.seats.filter(seat => !seat.taken);
             const rowCount = Math.max(...availableSeats.map(seat => seat.row));
             const middleRow = Math.floor(rowCount / 2);
-    
             const seatsInMiddleRow = availableSeats.filter(seat => seat.row === middleRow);
             const seatCountInMiddleRow = seatsInMiddleRow.length;
             let middleSeatInMiddleRow = Math.floor(seatCountInMiddleRow / 2);
-    
             const initialSelectedSeats = [];
 
             if (initialTicketCount === 1) {
@@ -51,7 +46,6 @@ const CinemaRoomComponent = () => {
                 const startSeatIndex = Math.max(0, middleSeatInMiddleRow - Math.floor(initialTicketCount / 2));
                 let selectedCount = 0;
                 for (let i = startSeatIndex; i < seatsInMiddleRow.length; i++) {
-
                     if (selectedCount >= initialTicketCount) break;
                     initialSelectedSeats.push(seatsInMiddleRow[i].id);
                     selectedCount++;
@@ -84,15 +78,11 @@ const CinemaRoomComponent = () => {
             setSelectedSeats(initialSelectedSeats);
         }
     }, [initialTicketCount, cinemaRoom]);
-    
-
-
 
     const handleSeatClick = (seatId) => {
         setSelectedSeats((prevSelectedSeats) => {
             const clickedSeatIndex = cinemaRoom.seats.findIndex(seat => seat.id === seatId);
             const availableSeats = cinemaRoom.seats.filter(seat => !seat.taken);
-            
             const clickedSeatIndexInAvailableSeats = availableSeats.findIndex(seat => seat.id === seatId);
     
             let startIndex = clickedSeatIndexInAvailableSeats;
@@ -108,8 +98,6 @@ const CinemaRoomComponent = () => {
             return updatedSelectedSeats.map(seat => seat.id);
         });
     };
-    
-    
 
     const handleMarkSeatsAsTaken = () => {
         markSeatsAsTaken(cinemaRoomId, selectedSeats)
@@ -117,7 +105,6 @@ const CinemaRoomComponent = () => {
                 console.log("Seats marked as taken successfully");
                 setSelectedSeats([]);
                 setRefresh(prevRefresh => !prevRefresh);
-                
                 
                 navigate('/booking-confirmation', {
                     state: {
@@ -127,7 +114,6 @@ const CinemaRoomComponent = () => {
                       movieLanguage: cinemaRoom.language,
                       movieStartTime: cinemaRoom.startTime,
                       ticketCount: selectedSeats.length
-
                     }
                 });
             })
@@ -141,7 +127,7 @@ const CinemaRoomComponent = () => {
     };
 
     const handleGoBack = () => {
-        navigate('/movies-list');
+        navigate('/');
     };
 
     if (!cinemaRoom) {
@@ -152,38 +138,30 @@ const CinemaRoomComponent = () => {
 
     return (
         <div className="container">
-
-            
-
-            <div>
-                <h8 className='text-center'>CinemaRoomComponent</h8>
-                <h2 className='text-center'>Selected Movie: {cinemaRoom.title}</h2>
-            </div>
-
-            <div className="screen-container">
-              <div className="screen"></div>
-            </div>
-
-            <div className="seat-map">
-                {sortedSeats.map((seat) => (
-                    <button
-                        key={seat.id}
-                        className={`seat ${seat.taken ? "taken" : ""} ${
-                            selectedSeats.includes(seat.id) ? "selected" : ""
-                            }`}
-                        onClick={() => handleSeatClick(seat.id)}
-                        disabled={seat.taken}
-                    >
-                        {seat.row}-{seat.number}
-                    </button>
-                ))}
-            </div>
-            <br /> <br />
-            <div className="center-button">
-                <Link to={`/movies`} className="btn btn-success" onClick={handleMarkSeatsAsTaken}>Book tickets</Link>
-                <button className="btn btn-danger" onClick={handleCancelSelection} style={{ marginLeft: "10px" }}>Clear selection</button>
-                <button className='btn btn-info' onClick={handleGoBack} style={{ marginLeft: "10px" }}>Go Back</button>
-                
+            <h2 className='heading-title'>Selected Movie: {cinemaRoom.title}</h2>
+            <div className='content-main'>
+                <div className="screen-container">
+                    <div className="screen"></div>
+                        </div>
+                            <div className="seat-map">
+                                {sortedSeats.map((seat) => (
+                                    <button key={seat.id}
+                                        className={`seat ${seat.taken ? "taken" : ""} ${
+                                        selectedSeats.includes(seat.id) ? "selected" : ""
+                                        }`}
+                                        onClick={() => handleSeatClick(seat.id)}
+                                        disabled={seat.taken}
+                                        >
+                                    {seat.row}-{seat.number}
+                                    </button>
+                                ))}
+                            </div>
+                        <br /> <br />
+                    <div className="center-button">
+                    <Link to={`/movies`} className="btn btn-success" onClick={handleMarkSeatsAsTaken}>Book tickets</Link>
+                    <button className="btn btn-danger" onClick={handleCancelSelection} style={{ marginLeft: "10px" }}>Clear selection</button>
+                    <button className='btn btn-info' onClick={handleGoBack} style={{ marginLeft: "10px" }}>Go Back</button>
+                </div>
             </div>
         </div>
     );
