@@ -66,7 +66,7 @@ const ListMovieComponent = () => {
         <div className='container'>
             <h2 className='heading-title'>List of Movies</h2>
             <button className='btn btn-primary mb-2' onClick={addNewMovie}>Add Movie</button>
-            <div>
+            <div className='content-main'>
                 <table className='table table-bordered table-striped'>
                     <thead>
                         <tr>
