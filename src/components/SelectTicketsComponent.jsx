@@ -1,50 +1,88 @@
 import React, { useEffect, useState } from 'react';
-import { getMovie } from '../services/MovieService';
-import { useParams, Link } from 'react-router-dom';
+import { getMovie, getAllMovies } from '../services/MovieService';
+import { getFreeSeatCount } from '../services/CinemaRoomService';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 
 const ListMovieComponent = () => {
-    const [movie, setMovie] = useState(null);
+    const [movies, setMovies] = useState([]);
     const [ticketCount, setTicketCount] = useState(1);
+    const [availableSeats, setAvailableSeats] = useState({});
+    const [selectedMovieTitle, setSelectedMovieTitle] = useState(null);
+
+    const navigate = useNavigate();
     const { id } = useParams();
 
     useEffect(() => {
-        loadMovieDetails(id);
+        if (id) {
+            getMovie(id)
+                .then(response => {
+                    const movie = response.data;
+                    setSelectedMovieTitle(movie.title); // Set the selected movie title
+                    setMovies([movie]); // Display only the selected movie
+                    updateAvailableSeats([movie]);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        } else {
+            listMovies();
+        }
     }, [id]);
 
-    const loadMovieDetails = (id) => {
-        getMovie(id)
+    function listMovies() {
+        getAllMovies()
             .then(response => {
-                setMovie(response.data);
+                setMovies(response.data);
+                updateAvailableSeats(response.data);
             })
             .catch(error => {
                 console.error(error);
             });
-    };
+    }
+
+    function updateAvailableSeats(movies) {
+        const seatCounts = {};
+        const promises = movies.map(movie => {
+            return getFreeSeatCount(movie.id)
+                .then(response => {
+                    seatCounts[movie.id] = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                    seatCounts[movie.id] = 0;
+                });
+        });
+
+        Promise.all(promises)
+            .then(() => {
+                setAvailableSeats(seatCounts);
+            });
+    }
 
     return (
         <div className='container'>
-
-            <h8 className='text-center'>SelectTicketsComponent</h8>
-
-            {movie && (
-                <>
-                    <h2 className='text-center'>Selected Movie: {movie.title}</h2>
-                    <div>
-                        <table className='table table-bordered table-striped'>
-                            <thead>
-                                <tr>
-                                    <th>Starting Time</th>
-                                    <th>Select Tickets</th>
-                                    <th>Ticket Count</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{movie.startTime}</td>
+            <h2 className='text-center'>{selectedMovieTitle ? `Selected Movie: ${selectedMovieTitle}` : 'Movies List'}</h2>
+            <div>
+                <table className='table table-bordered table-striped'>
+                    <thead>
+                        <tr>
+                            <th>Movie Title</th>
+                            <th>Seats available</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            movies.map(movie => (
+                                <tr key={movie.id}>
+                                    <td>{movie.title}</td>
+                                    <td>{availableSeats[movie.id]}</td>
                                     <td>
-                                        <Link to={`/cinema-room/${movie.id}?ticketCount=${ticketCount}`} className="btn btn-success" style={{ marginLeft: "10px" }}>Select tickets</Link>
-                                    </td>
-                                    <td>
+                                        {availableSeats[movie.id] >= ticketCount ? (
+                                            <Link to={`/cinema-room/${movie.id}?ticketCount=${ticketCount}`} className="btn btn-success" style={{ marginLeft: "10px" }}>Select tickets</Link>
+                                        ) : (
+                                            <button disabled className="btn btn-secondary" style={{ marginLeft: "10px" }}>Not enough seats</button>
+                                        )}
                                         <input 
                                             type="number" 
                                             value={ticketCount} 
@@ -54,11 +92,11 @@ const ListMovieComponent = () => {
                                         />
                                     </td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </>
-            )}
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

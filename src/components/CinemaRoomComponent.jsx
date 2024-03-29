@@ -100,10 +100,6 @@ const CinemaRoomComponent = () => {
             if (startIndex + initialTicketCount > availableSeats.length) {
                 startIndex = availableSeats.length - initialTicketCount;
             }
-            
-            if (startIndex + initialTicketCount > availableSeats.length) {
-                startIndex = availableSeats.length - initialTicketCount;
-            }
     
             startIndex = Math.max(0, startIndex);
     
@@ -112,9 +108,6 @@ const CinemaRoomComponent = () => {
             return updatedSelectedSeats.map(seat => seat.id);
         });
     };
-    
-    
-    
     
     
 
