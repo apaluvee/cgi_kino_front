@@ -91,24 +91,30 @@ const CinemaRoomComponent = () => {
     const handleSeatClick = (seatId) => {
         setSelectedSeats((prevSelectedSeats) => {
             const clickedSeatIndex = cinemaRoom.seats.findIndex(seat => seat.id === seatId);
-
             const availableSeats = cinemaRoom.seats.filter(seat => !seat.taken);
             
-            const startIndex = Math.max(0, clickedSeatIndex - Math.floor(initialTicketCount / 2));
-            const updatedSelectedSeats = availableSeats.slice(startIndex, startIndex + initialTicketCount);
+            const clickedSeatIndexInAvailableSeats = availableSeats.findIndex(seat => seat.id === seatId);
     
-        
-            const remainingCount = initialTicketCount - updatedSelectedSeats.length;
-
-            if (remainingCount > 0) {
-                const adjustedStartIndex = Math.max(0, startIndex - remainingCount);
-                const remainingSeats = availableSeats.slice(adjustedStartIndex, startIndex);
-                updatedSelectedSeats.unshift(...remainingSeats);
+            let startIndex = clickedSeatIndexInAvailableSeats;
+    
+            if (startIndex + initialTicketCount > availableSeats.length) {
+                startIndex = availableSeats.length - initialTicketCount;
             }
+            
+            if (startIndex + initialTicketCount > availableSeats.length) {
+                startIndex = availableSeats.length - initialTicketCount;
+            }
+    
+            startIndex = Math.max(0, startIndex);
+    
+            const updatedSelectedSeats = availableSeats.slice(startIndex, startIndex + initialTicketCount);
     
             return updatedSelectedSeats.map(seat => seat.id);
         });
     };
+    
+    
+    
     
     
 
